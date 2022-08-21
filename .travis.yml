@@ -1,3 +1,4 @@
+#aws 배포전 빌드 test
 sudo: required
 
 language: generic
@@ -8,9 +9,23 @@ services:
 before_install:
   - echo "start creating an image with dockerfile"
   - docker build -t jch941022/docker-react-v1 -f Dockerfile.dev .
-
+#-- --coverage 테스트 시 확인 up
 script:
-  - docker run -e CI=true jch941022/docker-react-v1 npm run test
+  - docker run -e CI=true jch941022/docker-react-v1 npm run test -- --coverage
 
 after_success:
   - echo "success docker-react-v5"
+
+#aws 배포 
+#bucket_name = s3 
+deploy:
+  provider: elasticbeanstalk
+  region: "ap-northeast-2"
+  app: "docker-react-v1"
+  env: "Dockerreactv1-env"
+  bucket_name: "elasticbeanstalk-ap-northeast-2-346808626993"
+  bucket_path: "docker-react-v1"
+  on:
+    branch: master
+access_key_id: $AWS_ACCESS_KEY
+secret_access_key: $AWS_SECRET_ACCESS_KEY

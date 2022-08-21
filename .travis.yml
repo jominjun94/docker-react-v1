@@ -7,10 +7,10 @@ services:
 
 before_install:
   - echo "start creating an image with dockerfile"
-  docker build -t jch941022/docker-react-v1 -f Dockerfile.dev
+  docker build -t jch941022/docker-react-v1 -f Dockerfile.dev .
 
 script:
   - docker run -e CI=true jch941022/docker-react-v1 npm run test
 
 after_success:
-  -echo "success docker-react-v4"
+  -echo "success docker-react-v5"
